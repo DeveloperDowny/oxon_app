@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 PreferredSizeWidget CustomAppBar(BuildContext context, String title,
     [List<Widget>? actions]) {
   return AppBar(
-    actions: actions,
+    actions: actions != null ? actions : [
+      Container(
+        width: 105,
+        height: 105,
+        child: Container(),
+      )],
     flexibleSpace: Container(),
     leadingWidth: 105,
     leading: Builder(

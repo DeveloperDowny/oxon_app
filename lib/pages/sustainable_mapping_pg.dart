@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:oxon_app/styles/button_styles.dart';
 import 'package:oxon_app/widgets/custom_appbar.dart';
 import 'package:oxon_app/widgets/custom_drawer.dart';
@@ -13,6 +16,13 @@ class SusMapping extends StatefulWidget {
 }
 
 class _SusMappingState extends State<SusMapping> with TickerProviderStateMixin {
+  Completer<GoogleMapController> _controller = Completer();
+
+  static final CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14.4746,
+  );
+
   late TabController _tabController;
 
   @override
@@ -110,28 +120,21 @@ class _SusMappingState extends State<SusMapping> with TickerProviderStateMixin {
                 ),
               ),
               Container(
-                height: 100,
+                // height: 100,
+                height: 230,
                 child: TabBarView( // TODO: add map here
+                  physics: NeverScrollableScrollPhysics(),
                   controller: _tabController,
                   children: [
-                    Column(
-                      children: [
-                        IconButton(
-                            onPressed: () {},
-                            icon: Container(
-                              width: 28,
-                              height: 28,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          "assets/icons/dustbin.png"))),
-                            )),
-                        Text(
-                          "Dustbins",
-                          style: Theme.of(context).textTheme.headline6,
-                        )
-                      ],
+                    Container(
+                      margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                      child: GoogleMap(
+                        mapType: MapType.hybrid,
+                        initialCameraPosition: _kGooglePlex,
+                        onMapCreated: (GoogleMapController controller) {
+                          _controller.complete(controller);
+                        },
+                      ),
                     ),
                     Column(
                       children: [
@@ -176,12 +179,12 @@ class _SusMappingState extends State<SusMapping> with TickerProviderStateMixin {
                 ),
               ),
               Container(
-                margin: EdgeInsets.fromLTRB(80, 50, 80, 18),
+                margin: EdgeInsets.fromLTRB(80, 18, 80, 18),
                 child: OutlinedButton(
                     onPressed: () {},
                     child: Text(
                       "Guide The Way",
-                      style: Theme.of(context).textTheme.headline3,
+                      style: Theme.of(context).textTheme.headline3!.copyWith(color: Color.fromARGB(255, 34, 90, 0)),
                     ),
                     style: solidRoundButtonStyle),
               ),
@@ -191,7 +194,7 @@ class _SusMappingState extends State<SusMapping> with TickerProviderStateMixin {
                     onPressed: () {},
                     child: Text(
                       "Open In Maps",
-                      style: Theme.of(context).textTheme.headline3,
+                      style: Theme.of(context).textTheme.headline3!.copyWith(color: Color.fromARGB(255, 34, 90, 0)),
                     ),
                     style: solidRoundButtonStyle),
               ),
