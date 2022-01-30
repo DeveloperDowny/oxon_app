@@ -1,15 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
-import 'package:oxon_app/pages/preview_report.dart';
-
-import './pages/welcome_pg.dart';
-import './pages/raise_concern.dart';
-import './pages/take_picture.dart';
-import './pages/sustainable_mapping_pg.dart';
-import './pages/profile_pg.dart';
-import './pages/donate_dustbin.dart';
-import './pages/products_pg.dart';
-import './pages/coming_soon.dart';
+import 'package:oxon_app/theme/app_theme.dart';
+import 'pages/welcome_pg.dart';
 
 
 List<CameraDescription> cameras = [];
@@ -31,16 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'Montserrat',
-        primaryColor: Colors.white,
-        textTheme: const TextTheme(
-          headline1: TextStyle(fontSize: 27.0),
-          headline2: TextStyle(fontSize: 25.0),
-          headline3: TextStyle(fontSize: 22.0),
-          headline6: TextStyle(fontSize: 15.0),
-        ).apply(bodyColor: Colors.white, displayColor: Colors.white),
-      ),
+      theme: AppTheme.define(),
       debugShowCheckedModeBanner: false,
       home: WelcomePage(),
       routes: {
