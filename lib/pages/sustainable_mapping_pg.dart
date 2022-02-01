@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:oxon_app/directions_repository.dart';
 import 'package:oxon_app/styles/button_styles.dart';
 import 'package:oxon_app/widgets/custom_appbar.dart';
 import 'package:oxon_app/widgets/custom_drawer.dart';
+
+import '../directions_model.dart';
 
 class SusMapping extends StatefulWidget {
   SusMapping({Key? key, required this.title}) : super(key: key);
@@ -17,6 +20,9 @@ class SusMapping extends StatefulWidget {
 
 class _SusMappingState extends State<SusMapping> with TickerProviderStateMixin {
   Completer<GoogleMapController> _controller = Completer();
+  Marker? _origin;
+  Marker? _destination;
+  Directions? _info;
 
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
@@ -121,7 +127,9 @@ class _SusMappingState extends State<SusMapping> with TickerProviderStateMixin {
               ),
               Container(
                 // height: 100,
-                height: 230,
+                height: (MediaQuery.of(context).size.height) * 0.35,
+                // width: (MediaQuery.of(context).size.width),
+                // height: 230,
                 child: TabBarView( // TODO: add map here
                   physics: NeverScrollableScrollPhysics(),
                   controller: _tabController,
@@ -129,8 +137,14 @@ class _SusMappingState extends State<SusMapping> with TickerProviderStateMixin {
                     Container(
                       margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
                       child: GoogleMap(
+
+                        onLongPress: _addMarker,
                         mapType: MapType.hybrid,
                         initialCameraPosition: _kGooglePlex,
+                        markers: {
+                          if (_origin != null) _origin!,
+                          if (_destination != null) _destination!
+                        },
                         onMapCreated: (GoogleMapController controller) {
                           _controller.complete(controller);
                         },
@@ -201,5 +215,41 @@ class _SusMappingState extends State<SusMapping> with TickerProviderStateMixin {
             ],
           )),
     );
+  }
+
+  void _addMarker(LatLng pos) async {
+    if (_origin == null || (_origin != null && _destination != null)) {
+      // origin is not set or bot are set
+      setState(() {
+        _origin = Marker(markerId: MarkerId("origin"),
+        infoWindow: InfoWindow(title: "Origin",
+        ),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+        position: pos,
+        );
+        // reset destination marker
+        _destination = null;
+
+        _info = null;
+      });
+    } else {
+      // origin is already set
+      // set destination
+
+      setState(() {
+        _destination = Marker(markerId: MarkerId("destination"),
+          infoWindow: InfoWindow(title: "Destination"),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+          position: pos,
+        );
+      });
+
+      // Get directions
+      final directions = await DirectionsRepository().getDirections(origin: _origin!.position, destination: _destination!.position);
+      setState(() {
+        _info = directions;
+      });
+
+    }
   }
 }
