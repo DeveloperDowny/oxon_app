@@ -24,10 +24,11 @@ class Directions {
 
     // Bounds
     final northeast = data['bounds']['northeast'];
-    final southwest = data['bound']['southwest'];
+    final southwest = data['bounds']['southwest'];
     final bounds = LatLngBounds(
         southwest: LatLng(southwest['lat'], southwest['lng']),
-        northeast: LatLng(northeast['lat'], northeast['lng']));
+        northeast: LatLng(northeast['lat'], northeast['lng'])
+    );
 
     // Distance and Duration
     String distance = "";

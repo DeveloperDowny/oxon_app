@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:oxon_app/directions_repository.dart';
 import 'package:oxon_app/styles/button_styles.dart';
+import 'package:oxon_app/theme/app_theme.dart';
 import 'package:oxon_app/widgets/custom_appbar.dart';
 import 'package:oxon_app/widgets/custom_drawer.dart';
 
@@ -136,18 +137,52 @@ class _SusMappingState extends State<SusMapping> with TickerProviderStateMixin {
                   children: [
                     Container(
                       margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                      child: GoogleMap(
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          GoogleMap(
+                            polylines: {
+                              if(_info != null)
+                                Polyline(polylineId: PolylineId("overview_polyline"),color:Colors.red,
+                                width: 5,
+                                points: _info!.polylinePoints.map((e) => LatLng(e.latitude, e.longitude)).toList())
+                            },
 
-                        onLongPress: _addMarker,
-                        mapType: MapType.hybrid,
-                        initialCameraPosition: _kGooglePlex,
-                        markers: {
-                          if (_origin != null) _origin!,
-                          if (_destination != null) _destination!
-                        },
-                        onMapCreated: (GoogleMapController controller) {
-                          _controller.complete(controller);
-                        },
+                            onLongPress: _addMarker,
+                            mapType: MapType.hybrid,
+                            initialCameraPosition: _kGooglePlex,
+                            markers: {
+                              if (_origin != null) _origin!,
+                              if (_destination != null) _destination!
+                            },
+                            onMapCreated: (GoogleMapController controller) {
+                              _controller.complete(controller);
+                            },
+                          ),
+                          if (_info!= null)
+                            Positioned(
+                              top: 20.0,
+                              child: Container(
+                                child: Text(
+                                  '${_info!.totalDistance},${_info!.totalDuration}',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                                decoration: BoxDecoration(
+                                  color: AppTheme.colors.oxonOffWhite, //change color
+                                  borderRadius: BorderRadius.circular(20),
+                                  boxShadow: [BoxShadow(
+                                    color: Colors.black26,
+                                    offset: Offset(0, 2),
+                                    blurRadius: 6,
+                                  )]
+                                ),
+                              ),
+                            )
+                        ],
                       ),
                     ),
                     Column(

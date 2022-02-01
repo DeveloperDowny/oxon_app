@@ -6,7 +6,7 @@ import 'package:oxon_app/.env.dart';
 import 'directions_model.dart';
 
 class DirectionsRepository {
-  static const String _baseUrl = 'https://maps.googleapis.com/api/directions/json?';
+  static const String _baseUrl = 'https://maps.googleapis.com/maps/api/directions/json?';
 
   final Dio _dio;
 
@@ -16,6 +16,7 @@ class DirectionsRepository {
   required LatLng origin,
     required LatLng destination,
 }) async {
+    print("in directions async");
     final response = await _dio.get(
       _baseUrl,
       queryParameters: {
