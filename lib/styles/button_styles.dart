@@ -58,10 +58,3 @@ ButtonStyle SolidRoundButtonStyle() {
   );
 }
 
-// ButtonStyle SolidRoundButtonStyle() {
-//   return ElevatedButton.styleFrom(
-//       primary: Color.fromARGB(255, 223, 229, 215),
-//       shape: RoundedRectangleBorder(
-//           borderRadius: BorderRadius.circular(32.0)));
-// }
-
