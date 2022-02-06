@@ -1,8 +1,11 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:oxon_app/directions_repository.dart';
+import 'package:oxon_app/models/toilets.dart';
+import 'package:oxon_app/repositories/loc_data_repository.dart';
 import 'package:oxon_app/styles/button_styles.dart';
 import 'package:oxon_app/theme/app_theme.dart';
 import 'package:oxon_app/widgets/custom_appbar.dart';
@@ -21,6 +24,7 @@ class SusMapping extends StatefulWidget {
 }
 
 class _SusMappingState extends State<SusMapping> with TickerProviderStateMixin {
+  final LocDataRepository repository = LocDataRepository();
   Completer<GoogleMapController> _controller = Completer();
   Marker? _origin;
   Marker? _destination;
@@ -141,6 +145,7 @@ class _SusMappingState extends State<SusMapping> with TickerProviderStateMixin {
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
+                          Text("todo"),
                           GoogleMap(
                             polylines: {
                               if(_info != null)
@@ -186,24 +191,18 @@ class _SusMappingState extends State<SusMapping> with TickerProviderStateMixin {
                         ],
                       ),
                     ),
-                    Column(
-                      children: [
-                        IconButton(
-                            onPressed: () {},
-                            icon: Container(
-                              width: 28,
-                              height: 28,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          "assets/icons/toilet.png"))),
-                            )),
-                        Text(
-                          "Toilets",
-                          style: Theme.of(context).textTheme.headline6,
-                        )
-                      ],
+                    Container(
+                      child: StreamBuilder<QuerySnapshot>(
+                        stream: repository.toiletsGetStream(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData)
+                            return LinearProgressIndicator();
+
+                          print("This is snapshot");
+                          print(snapshot);
+                          return _buildList(context, snapshot.data?.docs ?? []);
+                        }
+                      ),
                     ),
                     Column(
                       children: [
@@ -286,6 +285,20 @@ class _SusMappingState extends State<SusMapping> with TickerProviderStateMixin {
         _info = directions;
       });
 
+
+
     }
   }
+
+  Widget _buildList(BuildContext context, List<DocumentSnapshot>? snapshot) {
+    return ListView(
+      padding: const EdgeInsets.only(top: 20.0),
+      children: snapshot!.map((data) => _buildListItem(context, data)).toList(),
+    );
+  }
+
+  Widget _buildListItem(BuildContext context, DocumentSnapshot snapshot) {
+    final toilet = Toilet.fromSnapshot(snapshot);
+
+    return Text("${toilet.location['lat']} ${toilet.location['lng']} ");  }
 }

@@ -8,12 +8,14 @@ List<CameraDescription> cameras = [];
 Future<void> main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
     cameras = await availableCameras();
   } on CameraException catch (e) {
     print('Error in fetching the cameras: $e');
   }
 
   runApp(MyApp());}
+
 
 
 class MyApp extends StatelessWidget {
