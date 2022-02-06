@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:oxon_app/models/concern.dart';
 import 'package:oxon_app/pages/take_picture.dart';
 
 import '../widgets/custom_drawer.dart';
@@ -23,25 +22,7 @@ class _RaiseConcernDirectState extends State<RaiseConcernDirect> {
   Widget build(BuildContext context) {
     return Scaffold(
         drawer: CustomDrawer(),
-        appBar: AppBar(
-          elevation: 0,
-          shadowColor: Colors.transparent,
-          leading: Builder(builder: (context) {
-            return IconButton(
-              onPressed: () => Scaffold.of(context).openDrawer(),
-              icon: Icon(Icons.article_rounded),
-            );
-          }),
-          backgroundColor: Color.fromARGB(255, 34, 90, 0),
-          title: Text(
-            "Raise a Concern",
-            style: TextStyle(
-              fontSize: 30,
-              color: Colors.white,
-            ),
-          ),
-          centerTitle: true,
-        ),
+        appBar: CustomAppBar(context, "Raise Concern"),
         body: Stack(children: [
           Container(
             decoration: BoxDecoration(
@@ -242,8 +223,6 @@ class _RaiseConcernDirectState extends State<RaiseConcernDirect> {
               ),
             ),
           )
-        ]
-        )
-    );
+        ]));
   }
 }
