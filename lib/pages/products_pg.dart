@@ -35,10 +35,21 @@ class _ProductsPageState extends State<ProductsPage> {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage(
-                                  "assets/icons/shopping_cart.png"))),
+                              image: AssetImage("assets/icons/shopping_cart.png"))),
                     )),
               )
+              // Builder(
+              //   builder: (context) => IconButton(
+              //       onPressed: () {},
+              //       icon: Container(
+              //         width: 43,
+              //         height: 43,
+              //         alignment: Alignment.center,
+              //         decoration: BoxDecoration(
+              //             image: DecorationImage(
+              //                 image: AssetImage("assets/icons/shopping_cart.png"))),
+              //       )),
+              // )
             ]),
             backgroundColor: Color.fromARGB(255, 34, 90, 0),
             body: SafeArea(

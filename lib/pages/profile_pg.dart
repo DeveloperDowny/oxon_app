@@ -40,6 +40,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 margin: EdgeInsets.fromLTRB(36, 0, 36, 0),
                 child: Center(
                   child: Column(children: [
+                    SizedBox(
+                      height: 40,
+                    ),
                     Table(
                       defaultColumnWidth: FixedColumnWidth(160),
                       children: [
