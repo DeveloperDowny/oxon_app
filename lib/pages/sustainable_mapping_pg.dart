@@ -24,6 +24,8 @@ class SusMapping extends StatefulWidget {
 
 class _SusMappingState extends State<SusMapping> with TickerProviderStateMixin {
   final LocDataRepository repository = LocDataRepository();
+  Set<Marker> dustbinMarkers ={};
+  Set<Marker> toiletMarkers ={};
   Completer<GoogleMapController> _controller = Completer();
   Marker? _origin;
   Marker? _destination;
@@ -73,6 +75,7 @@ class _SusMappingState extends State<SusMapping> with TickerProviderStateMixin {
                       children: [
                         IconButton(
                             onPressed: () => _tabController.animateTo(0),
+                            // allMarkers = {};},
                             icon: Container(
                               width: 28,
                               height: 28,
@@ -92,6 +95,7 @@ class _SusMappingState extends State<SusMapping> with TickerProviderStateMixin {
                       children: [
                         IconButton(
                             onPressed: () => _tabController.animateTo(1),
+                            // allMarkers = {};},
                             icon: Container(
                               width: 28,
                               height: 28,
@@ -111,6 +115,7 @@ class _SusMappingState extends State<SusMapping> with TickerProviderStateMixin {
                       children: [
                         IconButton(
                             onPressed: () => _tabController.animateTo(2),
+                            // allMarkers = {};},
                             icon: Container(
                               width: 28,
                               height: 28,
@@ -131,8 +136,9 @@ class _SusMappingState extends State<SusMapping> with TickerProviderStateMixin {
                 ),
               ),
               Container(
+                margin: EdgeInsets.only(top: 24),
                 // height: 100,
-                height: (MediaQuery.of(context).size.height) * 0.35,
+                height: (MediaQuery.of(context).size.height) * 0.4,
                 // width: (MediaQuery.of(context).size.width),
                 // height: 230,
                 child: TabBarView( // TODO: add map here
@@ -140,54 +146,37 @@ class _SusMappingState extends State<SusMapping> with TickerProviderStateMixin {
                   controller: _tabController,
                   children: [
                     Container(
-                      margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Text("todo"),
-                          GoogleMap(
-                            polylines: {
-                              if(_info != null)
-                                Polyline(polylineId: PolylineId("overview_polyline"),color:Colors.red,
-                                width: 5,
-                                points: _info!.polylinePoints.map((e) => LatLng(e.latitude, e.longitude)).toList())
-                            },
+                      child: StreamBuilder<QuerySnapshot>(
+                          stream: repository.dustbinsGetStream(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData)
+                              return LinearProgressIndicator();
 
-                            onLongPress: _addMarker,
-                            mapType: MapType.hybrid,
-                            initialCameraPosition: _kGooglePlex,
-                            markers: {
-                              if (_origin != null) _origin!,
-                              if (_destination != null) _destination!
-                            },
-                            onMapCreated: (GoogleMapController controller) {
-                              _controller.complete(controller);
-                            },
-                          ),
-                          if (_info!= null)
-                            Positioned(
-                              top: 20.0,
-                              child: Container(
-                                child: Text(
-                                  '${_info!.totalDistance},${_info!.totalDuration}',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                                decoration: BoxDecoration(
-                                  color: AppTheme.colors.oxonOffWhite, //change color
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [BoxShadow(
-                                    color: Colors.black26,
-                                    offset: Offset(0, 2),
-                                    blurRadius: 6,
-                                  )]
-                                ),
-                              ),
-                            )
-                        ],
+                            for (int i=0; i < snapshot.data!.docs.length; i++) {
+                              dustbinMarkers.add(
+                                  Marker(markerId: MarkerId("$i"),
+                                    infoWindow: InfoWindow(title: "Public Dustbins",
+                                    ),
+                                    icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+                                    position: LatLng(snapshot.data!.docs[i]["location"].latitude, snapshot.data!.docs[i]
+                                    ["location"].longitude),
+                                  )
+                              );
+                            }
+
+                            // print("This is snapshot");
+                            // print(snapshot);
+                            // final List<DocumentSnapshot> blank = [];
+                            // initializeMarkers(snapshot.data?.docs);
+                            return GoogleMap(
+                              mapType: MapType.hybrid,
+                              initialCameraPosition: CameraPosition(target: LatLng(26.4723125, 76.7268125), zoom: 16),
+                              markers: dustbinMarkers,
+                              onMapCreated: (GoogleMapController controller) {
+                                _controller.complete(controller);
+                              },
+                            );
+                          }
                       ),
                     ),
                     Container(
@@ -197,9 +186,30 @@ class _SusMappingState extends State<SusMapping> with TickerProviderStateMixin {
                           if (!snapshot.hasData)
                             return LinearProgressIndicator();
 
-                          print("This is snapshot");
-                          print(snapshot);
-                          return _buildList(context, snapshot.data?.docs ?? []);
+                          for (int i=0; i < snapshot.data!.docs.length; i++) {
+                                toiletMarkers.add(
+                                          Marker(markerId: MarkerId("$i"),
+                                            infoWindow: InfoWindow(title: "Public Toilet",
+                                            ),
+                                            icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+                                            position: LatLng(snapshot.data!.docs[i]["location"].latitude, snapshot.data!.docs[i]
+                                                ["location"].longitude),
+                                          )
+                                );
+                          }
+
+                          // print("This is snapshot");
+                          // print(snapshot);
+                          // final List<DocumentSnapshot> blank = [];
+                          // initializeMarkers(snapshot.data?.docs);
+                          return GoogleMap(
+                            mapType: MapType.hybrid,
+                            initialCameraPosition: CameraPosition(target: LatLng(26.4723125, 76.7268125), zoom: 16),
+                            markers: toiletMarkers,
+                            onMapCreated: (GoogleMapController controller) {
+                              _controller.complete(controller);
+                            },
+                          );
                         }
                       ),
                     ),
@@ -299,5 +309,56 @@ class _SusMappingState extends State<SusMapping> with TickerProviderStateMixin {
   Widget _buildListItem(BuildContext context, DocumentSnapshot snapshot) {
     final toilet = Toilet.fromSnapshot(snapshot);
 
-    return Text("${toilet.location['lat']} ${toilet.location['lng']} ");  }
+    return Text("${toilet.location.latitude} ${toilet.location.longitude} ");  }
+
+  // void initializeMarkers(List<DocumentSnapshot>? snapshots) {
+  //   var counter = 0;
+  //   for (counter=0; counter < snapshots!.length; counter += 1) {
+  //     // final toilet = Toilet.fromSnapshot(snapshots[counter]);
+  //     allMarkers.add(
+  //               Marker(markerId: MarkerId("$counter"),
+  //                 infoWindow: InfoWindow(title: "Public Toilet",
+  //                 ),
+  //                 icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+  //                 position: LatLng(snapshots[counter].location.latitude, toilet.location.longitude),
+  //               )
+  //     );
+  //   }
+  //
+  //
+  //   setState(() {
+  //
+  //   });
+  //   // snapshots!.forEach((element) {
+  //   //   final toilet = Toilet.fromSnapshot(element);
+  //   //   print(toilet.location);
+  //   //   allMarkers.add(
+  //   //       Marker(markerId: MarkerId("$counter"),
+  //   //         infoWindow: InfoWindow(title: "Public Toilet",
+  //   //         ),
+  //   //         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+  //   //         position: LatLng(toilet.location.latitude, toilet.location.longitude),
+  //   //       )      );
+  //   //
+  //   //   counter += 1;
+  //   // });
+  //   // snapshots!.asMap().forEach((index, element) {
+  //   //   final toilet = Toilet.fromSnapshot(element);
+  //   //   print(toilet.location);
+  //   //   allMarkers.add(
+  //   //       Marker(markerId: MarkerId("$index"),
+  //   //         infoWindow: InfoWindow(title: "Public Toilet",
+  //   //         ),
+  //   //         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+  //   //         position: LatLng(toilet.location.latitude, toilet.location.longitude),
+  //   //       )      );
+  //   // });
+  //
+  //   // setState(() {
+  //   //
+  //   // });
+  // }
 }
+
+// todo convert into geopoints at firestore
+// fetch as geopoint
