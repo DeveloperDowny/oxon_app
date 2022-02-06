@@ -20,7 +20,7 @@ class _RaiseConcernDirectState extends State<RaiseConcernDirect> {
   Widget build(BuildContext context) {
     return Scaffold(
         drawer: CustomDrawer(),
-        appBar: CustomAppBar(context, "Raise Concern"),
+        appBar: CustomAppBar(context, "Raise a Concern"),
         body: Stack(children: [
           Container(
             decoration: BoxDecoration(
