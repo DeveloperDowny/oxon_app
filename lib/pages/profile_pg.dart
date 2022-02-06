@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:oxon_app/styles/button_styles.dart';
+import 'package:oxon_app/theme/app_theme.dart';
+import 'package:oxon_app/theme/colors.dart';
 import 'package:oxon_app/widgets/custom_appbar.dart';
 import 'package:oxon_app/widgets/custom_drawer.dart';
 
@@ -38,6 +40,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 margin: EdgeInsets.fromLTRB(36, 0, 36, 0),
                 child: Center(
                   child: Column(children: [
+                    SizedBox(
+                      height: 40,
+                    ),
                     Table(
                       defaultColumnWidth: FixedColumnWidth(160),
                       children: [
@@ -77,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         onPressed: () {},
                         child: Text(
                           "Update Details",
-                          style: Theme.of(context).textTheme.headline1,
+                          style: Theme.of(context).textTheme.headline1!.copyWith(color: AppColors().oxonGreen),
                         ),
                         style: solidRoundButtonStyle,
                       ),
@@ -91,7 +96,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Container(
                           child: Text(
                             "Check Your Wallet",
-                            style: Theme.of(context).textTheme.headline1,
+                            style: Theme.of(context).textTheme.headline1!.copyWith(color: AppTheme.colors.oxonGreen),
                           ),
                         ),
                         style: solidRoundButtonStyle,

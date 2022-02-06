@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
-
 import 'pages/welcome_pg.dart';
 import './pages/raise_concern.dart';
 // import './pages/raise_concern_camera.dart';
@@ -11,6 +9,8 @@ List<CameraDescription> cameras = [];
 Future<void> main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+
     cameras = await availableCameras();
   } on CameraException catch (e) {
     print('Error in fetching the cameras: $e');
@@ -25,14 +25,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'Montserrat',
-        primaryColor: Colors.white,
-        textTheme: const TextTheme(
-          headline1: TextStyle(fontSize: 27.0, fontWeight: FontWeight.w600),
-          headline2: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w600),
-        ).apply(bodyColor: Colors.white, displayColor: Colors.white),
-      ),
+      theme: AppTheme.define(),
       debugShowCheckedModeBanner: false,
       home: WelcomePage(),
       routes: {
