@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LocDataRepository {
   final CollectionReference toiletsCollection = FirebaseFirestore
-      .instance.collection('toilets');
+      .instance.collection('toilets_geopoint');
 
   final CollectionReference dustbinsCollection = FirebaseFirestore
-      .instance.collection('dustbins');
+      .instance.collection('dustbins_geopoint');
 
 
   Stream<QuerySnapshot> toiletsGetStream() {

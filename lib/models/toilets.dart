@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Toilet {
-  Map<String, dynamic> location;
+  GeoPoint location;
   String? referenceId;
 
 
@@ -9,12 +9,12 @@ class Toilet {
   {this.referenceId});
 
   factory Toilet.fromSnapshot(DocumentSnapshot snapshot) {
-    final newToilet = Toilet.fromJson(snapshot.data() as Map<String, dynamic>);
+    final newToilet = Toilet.fromJson(snapshot.data() as Map<String, GeoPoint>);
     newToilet.referenceId = snapshot.reference.id;
     return newToilet;
   }
 
-  factory Toilet.fromJson(Map<String, dynamic> json) => _ToiletFromJson(json);
+  factory Toilet.fromJson(Map<String, GeoPoint> json) => _ToiletFromJson(json);
 
   Map<String, dynamic> toJson() => _ToiletToJson(this);
 
@@ -23,15 +23,11 @@ class Toilet {
 
 }
 
-Toilet _ToiletFromJson(Map<String, dynamic> json) {
-  return Toilet(
-    json['location'] as Map<String, dynamic>);
-
-
+Toilet _ToiletFromJson(Map<String, GeoPoint> json) {
+  return Toilet(json['location']!);
 }
 
 
 Map<String, dynamic> _ToiletToJson(Toilet instance) => <String, dynamic> {
-  'location': instance.location
-};
+  'location': instance.location    };
 
