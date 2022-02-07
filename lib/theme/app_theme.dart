@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import 'package:flutter/material.dart';
 import 'package:oxon_app/theme/colors.dart';
+=======
+import 'package:oxon_app/theme/colors.dart';
+import 'package:flutter/material.dart';
+>>>>>>> origin/master
 
 @immutable
 class AppTheme {
