@@ -1,6 +1,14 @@
 import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:oxon_app/pages/coming_soon.dart';
+import 'package:oxon_app/pages/donate_dustbin.dart';
+import 'package:oxon_app/pages/preview_report.dart';
+import 'package:oxon_app/pages/products_pg.dart';
+import 'package:oxon_app/pages/profile_pg.dart';
+import 'package:oxon_app/pages/raise_concern.dart';
+import 'package:oxon_app/pages/sustainable_mapping_pg.dart';
+import 'package:oxon_app/pages/take_picture.dart';
 import 'package:oxon_app/theme/app_theme.dart';
 import 'pages/welcome_pg.dart';
 
@@ -32,8 +40,8 @@ class MyApp extends StatelessWidget {
       routes: {
         RaiseConcernDirect.routeName: (context) => RaiseConcernDirect(),
         TakePictureScreen.routeName: (context) => TakePictureScreen(camera: cameras[0]),
-        ProfilePage.routeName: (context) => ProfilePage(title: 'John Doe'), //Change later
-        SusMapping.routeName: (context) => SusMapping(title: 'Title'),     //Change Later
+        ProfilePage.routeName: (context) => ProfilePage(), //Change later //title: 'John Doe'
+        SusMapping.routeName: (context) => SusMapping(),     //Change Later //title: 'Title'
         DonateDustbin.routeName: (context) => DonateDustbin(),
         ProductsPage.routeName: (context) => ProductsPage(),
         ComingSoon.routeName: (context) => ComingSoon(),

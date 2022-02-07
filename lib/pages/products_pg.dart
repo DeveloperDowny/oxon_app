@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:oxon_app/widgets/custom_appbar.dart';
 
 import '../widgets/custom_drawer.dart';
@@ -35,21 +33,10 @@ class _ProductsPageState extends State<ProductsPage> {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage("assets/icons/shopping_cart.png"))),
+                              image: AssetImage(
+                                  "assets/icons/shopping_cart.png"))),
                     )),
               )
-              // Builder(
-              //   builder: (context) => IconButton(
-              //       onPressed: () {},
-              //       icon: Container(
-              //         width: 43,
-              //         height: 43,
-              //         alignment: Alignment.center,
-              //         decoration: BoxDecoration(
-              //             image: DecorationImage(
-              //                 image: AssetImage("assets/icons/shopping_cart.png"))),
-              //       )),
-              // )
             ]),
             backgroundColor: Color.fromARGB(255, 34, 90, 0),
             body: SafeArea(

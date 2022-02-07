@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:oxon_app/styles/button_styles.dart';
 import 'package:oxon_app/theme/app_theme.dart';
-import 'package:oxon_app/theme/colors.dart';
 import 'package:oxon_app/widgets/custom_appbar.dart';
 import 'package:oxon_app/widgets/custom_drawer.dart';
 
 class ProfilePage extends StatefulWidget {
-  ProfilePage({Key? key, required this.title}) : super(key: key);
+  ProfilePage({Key? key}) : super(key: key); //, required this.title
 
-  final String title;
+  static const routeName = '/profile-page';
+
+  // final String title;
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -27,7 +28,7 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Scaffold(
           drawer: CustomDrawer(),
           backgroundColor: Color.fromARGB(255, 34, 90, 0),
-          appBar: CustomAppBar(context, widget.title),
+          appBar: CustomAppBar(context, "Profile"),
           body: Stack(
             children: [
               Container(
@@ -82,7 +83,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         onPressed: () {},
                         child: Text(
                           "Update Details",
-                          style: Theme.of(context).textTheme.headline1!.copyWith(color: AppColors().oxonGreen),
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline1!
+                              .copyWith(color: AppTheme.colors.oxonGreen),
                         ),
                         style: solidRoundButtonStyle,
                       ),
@@ -96,7 +100,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Container(
                           child: Text(
                             "Check Your Wallet",
-                            style: Theme.of(context).textTheme.headline1!.copyWith(color: AppTheme.colors.oxonGreen),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline1!
+                                .copyWith(color: AppTheme.colors.oxonGreen),
                           ),
                         ),
                         style: solidRoundButtonStyle,

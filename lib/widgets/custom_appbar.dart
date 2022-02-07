@@ -10,6 +10,7 @@ PreferredSizeWidget CustomAppBar(BuildContext context, String title,
         child: AppBar(
           actions: actions,
           leadingWidth: 105,
+          // leadingWidth: 80,
           leading: Builder(
             builder: (context) => IconButton(
                 onPressed: () => Scaffold.of(context).openDrawer(),
@@ -42,7 +43,12 @@ PreferredSizeWidget CustomAppBar(BuildContext context, String title,
     child: Container(
       margin: EdgeInsets.only(top: 40),
       child: AppBar(
+        // leadingWidth: 80,
         leadingWidth: 105,
+        actions: [Container(
+          width: 105,
+          height: 55,
+        )],
         leading: Builder(
           builder: (context) => IconButton(
               onPressed: () => Scaffold.of(context).openDrawer(),

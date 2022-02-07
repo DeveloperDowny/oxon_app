@@ -5,14 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:oxon_app/repositories/loc_data_repository.dart';
 import 'package:oxon_app/styles/button_styles.dart';
+import 'package:oxon_app/theme/app_theme.dart';
 import 'package:oxon_app/widgets/custom_appbar.dart';
 import 'package:oxon_app/widgets/custom_drawer.dart';
 
 class SusMapping extends StatefulWidget {
-  SusMapping({Key? key, required this.title}) : super(key: key);
+  SusMapping({Key? key}) : super(key: key); //, required this.title
   static const routeName = '/mapping-page';
 
-  final String title;
+  // final String title;
 
   @override
   _SusMappingState createState() => _SusMappingState();
@@ -46,7 +47,7 @@ class _SusMappingState extends State<SusMapping> with TickerProviderStateMixin {
       child: Scaffold(
           drawer: CustomDrawer(),
           backgroundColor: Color.fromARGB(255, 34, 90, 0),
-          appBar: CustomAppBar(context, widget.title),
+          appBar: CustomAppBar(context, "Sustainable Mapping"),
           body: Column(
             children: [
               Container(
@@ -199,25 +200,22 @@ class _SusMappingState extends State<SusMapping> with TickerProviderStateMixin {
                             );
                           }),
                     ),
-                    Column(
-                      children: [
-                        IconButton(
-                            onPressed: () {},
-                            icon: Container(
-                              width: 28,
-                              height: 28,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          "assets/icons/suggest_loc.png"))),
-                            )),
-                        Text(
-                          "Suggest\nLocation",
-                          style: Theme.of(context).textTheme.headline6,
-                          textAlign: TextAlign.center,
-                        )
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.white,
+                          ),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Coming Soon",
+                            style: AppTheme.define().textTheme.headline1,
+                          ),
+                        ),
+                      ),
                     )
                   ],
                 ),
